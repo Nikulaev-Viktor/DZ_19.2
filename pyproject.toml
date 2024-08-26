@@ -1,0 +1,16 @@
+[tool.poetry]
+name = "dz-19-2"
+version = "0.1.0"
+description = ""
+authors = ["Viktor Nikulaev <viktor_1611@mail.ru>"]
+readme = "README.md"
+packages = [{include = "dz_19"}]
+
+[tool.poetry.dependencies]
+python = "^3.12"
+django = "^5.1"
+
+
+[build-system]
+requires = ["poetry-core"]
+build-backend = "poetry.core.masonry.api"
