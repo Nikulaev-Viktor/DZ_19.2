@@ -105,6 +105,7 @@
         display: block !important;
       }
 
+
     </style>
 
 
@@ -180,7 +181,7 @@
 
 
 <header data-bs-theme="dark">
-{% include 'includes/inc_menu.html' %}
+    {% include 'includes/inc_menu.html' %}
 </header>
 
 <main>
@@ -189,17 +190,19 @@
         <div class="row py-lg-5">
             <div class="col-lg-6 col-md-8 mx-auto">
                 <h1 class="fw-light">Интернет-магазин Viktor's</h1>
-                <p class="lead text-body-secondary">В этом интернет-магазине можно купить различные товары по самой лучшей цене,
+                <p class="lead text-body-secondary">В этом интернет-магазине можно купить различные товары по самой
+                    лучшей цене,
                     с бесплатной доставкой и официальной гарантией.</p>
                 <p>
                     <a href="#" class="btn btn-primary my-2">Main call to action</a>
                     <a href="#" class="btn btn-secondary my-2">Secondary action</a>
                 </p>
             </div>
+            {% block content %}
+            {% endblock %}
         </div>
     </section>
-{% block content %}
-{% endblock %}
+
 </main>
 
 <footer class="text-body-secondary py-5">
