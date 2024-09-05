@@ -1,12 +1,12 @@
-from django.shortcuts import render, get_object_or_404
+from django.shortcuts import render
 
 from catalog.models import Product
 
 
 # def home(request):
 #     return render(request, 'catalog/home.html')
-def base(request):
-    return render(request, 'catalog/base.html')
+# def base(request):
+#     return render(request, 'catalog/base.html')
 
 
 def contacts(request):
