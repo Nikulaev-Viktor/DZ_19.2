@@ -106,6 +106,8 @@
       }
 
 
+
+
     </style>
 
 
@@ -194,8 +196,8 @@
                     лучшей цене,
                     с бесплатной доставкой и официальной гарантией.</p>
                 <p>
-                    <a href="#" class="btn btn-primary my-2">Main call to action</a>
-                    <a href="#" class="btn btn-secondary my-2">Secondary action</a>
+                    <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:product_list' %}">Каталог</a>
+                    <a class="p-2 btn btn-outline-primary" href="/contacts/">Контакты</a>
                 </p>
             </div>
             {% block content %}
@@ -210,9 +212,8 @@
         <p class="float-end mb-1">
             <a href="#">Back to top</a>
         </p>
-        <p class="mb-1">Album example is &copy; Bootstrap, but please download and customize it for yourself!</p>
-        <p class="mb-0">New to Bootstrap? <a href="/">Visit the homepage</a> or read our <a
-                href="/docs/5.3/getting-started/introduction/">getting started guide</a>.</p>
+        <p class="mb-1">&copy; {% now 'Y' %} </p>
+
     </div>
 </footer>
 <script src="{% static 'js/bootstrap.bundle.min.js' %}"></script>
