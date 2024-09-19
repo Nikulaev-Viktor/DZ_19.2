@@ -1,5 +1,6 @@
 {% extends 'catalog/base.html' %}
 {% load my_tags %}
+{% load static %}
 {% block content %}
 <div class="album py-5 bg-body-tertiary">
     <div class="container">
@@ -16,6 +17,7 @@
                         <div class="btn-group">
                             <a class="btn btn-primary" href="{% url 'catalog:product_detail' product.pk %}"
                                role="button">Просмотр</a>
+
                         </div>
                     </div>
                 </div>

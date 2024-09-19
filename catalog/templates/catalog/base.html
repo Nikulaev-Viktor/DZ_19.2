@@ -199,7 +199,8 @@
                     <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:product_list' %}">Каталог</a>
                     <a class="p-2 btn btn-outline-primary" href="/contacts/">Контакты</a>
                     <a class="p-2 btn btn-outline-primary" href="/blog/create">Создать Блог</a>
-                    <a class="p-2 btn btn-outline-primary" href="/blog/toggle_activity">Активировать </a>
+                    <a class="p-2 btn btn-outline-primary" href="/blog/toggle_activity">Активировать блог</a>
+                    <a class="p-2 btn btn-outline-primary" href="{% url 'catalog:product_create' %}">Добавить продукт</a>
                 </p>
             </div>
             {% block content %}
