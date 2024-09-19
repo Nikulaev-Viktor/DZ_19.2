@@ -1,7 +1,7 @@
 from django import forms
 from django.core.exceptions import ValidationError
 
-from catalog.models import Product
+from catalog.models import Product, Version
 
 
 class ProductForm(forms.ModelForm):
@@ -28,3 +28,9 @@ class ProductForm(forms.ModelForm):
             if word in cleaned_data:
                 raise ValidationError(f'Описание продукта не должно содержать запрещенное слово: {word}')
         return cleaned_data
+
+
+class VersionForm(forms.ModelForm):
+    model = Version
+    field = '__all__'
+
