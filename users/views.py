@@ -1,11 +1,13 @@
 import secrets
 
+
+from django.contrib.auth.views import LoginView
 from django.core.mail import send_mail
 from django.shortcuts import get_object_or_404, redirect
 from django.urls import reverse_lazy, reverse
-from django.views.generic import CreateView
+from django.views.generic import CreateView, UpdateView
 
-from users.forms import UserRegisterForm
+from users.forms import UserRegisterForm, UserLoginForm, UserProfileForm
 from users.models import User
 from config.settings import EMAIL_HOST_USER
 
@@ -17,7 +19,7 @@ class UserCreateView(CreateView):
     success_url = reverse_lazy('users:login')
 
     def form_valid(self, form):
-        user = form.save
+        user = form.save()
         user.is_active = False
         token = secrets.token_hex(16)
         user.token = token
@@ -40,3 +42,18 @@ def email_verification(request, token):
     user.save()
     return redirect(reverse('users:login'))
 
+
+class UserLoginView(LoginView):
+    model = User
+    template_name = 'users/login.html'
+    form_class = UserLoginForm
+    redirect_authenticated_user = True
+
+
+class ProfileView(UpdateView):
+    model = User
+    form_class = UserProfileForm
+    success_url = reverse_lazy('users:profile')
+
+    def get_object(self, queryset=None):
+        return self.request.user

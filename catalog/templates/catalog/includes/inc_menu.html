@@ -11,6 +11,7 @@
                     <li><a href="{% url 'catalog:product_list' %}" class="text-black">Главная</a></li>
                     {% if user.is_authenticated %}
                     <li><a href="{% url 'users:logout' %}" class="text-black">Выход</a></li>
+                    <li><a href="{% url 'users:profile' %}" class="text-black">Профиль</a></li>
                     {% else %}
                     <li><a href="{% url 'users:login' %}" class="text-black">Вход</a></li>
                     <li><a href="{% url 'users:register' %}" class="text-black">Регистрация</a></li>

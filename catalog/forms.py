@@ -14,12 +14,13 @@ class StyleFormMixin:
             else:
                 fild.widget.attrs['class'] = 'form-control'
 
+
 class ProductForm(StyleFormMixin, forms.ModelForm):
     """Форма создания продукта"""
 
     class Meta:
         model = Product
-        fields = '__all__'
+        exclude = ('author', 'views_count')
 
     forbidden_words = ['казино', 'криптовалюта', 'крипта', 'биржа', 'дешево', 'бесплатно', 'обман', 'полиция',
                        'радар']

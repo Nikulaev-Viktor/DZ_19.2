@@ -7,7 +7,7 @@ from blog.models import NULLABLE
 class User(AbstractUser):
     username = None
 
-    first_name = models.CharField(max_length=100,verbose_name='имя')
+    first_name = models.CharField(max_length=100, verbose_name='имя')
     email = models.EmailField(unique=True, verbose_name='email')
     phone_number = models.CharField(max_length=35, verbose_name='номер телефона', **NULLABLE, help_text='введите номер телефона')
     avatar = models.ImageField(upload_to='users/avatars/', verbose_name='аватар', **NULLABLE, help_text='загрузите свой аватар')

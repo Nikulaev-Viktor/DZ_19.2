@@ -1,5 +1,7 @@
 from django.db import models
 
+from users.models import User
+
 NULLABLE = {"blank": True, "null": True}
 
 
@@ -59,6 +61,9 @@ class Product(models.Model):
     updated_at = models.DateTimeField(
         auto_now=True, verbose_name="Дата последнего изменения записи в БД"
     )
+    views_count = models.IntegerField(default=0, verbose_name='просмотры')
+
+    author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор', **NULLABLE, related_name='authors')
 
     def __str__(self):
         return f"{self.title} {self.description} {self.price}"
@@ -66,7 +71,7 @@ class Product(models.Model):
     class Meta:
         verbose_name = "продукт"
         verbose_name_plural = "продукты"
-        ordering = ["title"]
+        ordering = ["title", "author"]
 
 
 class Version(models.Model):
