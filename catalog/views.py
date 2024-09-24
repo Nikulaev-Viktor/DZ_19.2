@@ -46,15 +46,12 @@ class ProductCreateView(CreateView, LoginRequiredMixin):
         return super().form_valid(form)
 
 
-
 class ProductUpdateView(UpdateView, LoginRequiredMixin):
     model = Product
     form_class = ProductForm
 
-
     def get_success_url(self):
         return reverse_lazy('catalog:product_detail', kwargs={"pk": self.object.pk})
-
 
     def get_context_data(self, **kwargs):
         context_data = super().get_context_data(**kwargs)
@@ -80,4 +77,3 @@ class ProductUpdateView(UpdateView, LoginRequiredMixin):
 class ProductDeleteView(DeleteView, LoginRequiredMixin):
     model = Product
     success_url = reverse_lazy('catalog:product_list')
-

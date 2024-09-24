@@ -1,13 +1,15 @@
 import secrets
+import random
+import string
 
-
-from django.contrib.auth.views import LoginView
+from django.contrib.auth.hashers import make_password
+from django.contrib.auth.views import LoginView, PasswordResetView
 from django.core.mail import send_mail
-from django.shortcuts import get_object_or_404, redirect
+from django.shortcuts import get_object_or_404, redirect, render
 from django.urls import reverse_lazy, reverse
 from django.views.generic import CreateView, UpdateView
 
-from users.forms import UserRegisterForm, UserLoginForm, UserProfileForm
+from users.forms import UserRegisterForm, UserLoginForm, UserProfileForm, ResetPassword
 from users.models import User
 from config.settings import EMAIL_HOST_USER
 
@@ -41,6 +43,25 @@ def email_verification(request, token):
     user.is_active = True
     user.save()
     return redirect(reverse('users:login'))
+
+
+class CustomPasswordReset(PasswordResetView):
+
+    def form_valid(self, form):
+        email = form.cleaned_data['email']
+        user = get_object_or_404(User, email=email)
+        characters = string.ascii_letters + string.digits + string.punctuation
+        new_password = ''.join(random.choice(characters) for _ in range(12))
+        user.password = make_password(new_password)
+        send_mail(
+            subject='Вы сменили пароль',
+            message=f'Ваш новый пароль {new_password}',
+            from_email=EMAIL_HOST_USER,
+            recipient_list=[user.email]
+        )
+        user.save()
+
+        return super().form_valid(form)
 
 
 class UserLoginView(LoginView):
