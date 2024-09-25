@@ -9,7 +9,7 @@ from catalog.models import Product, Version
 from catalog.forms import ProductForm, VersionForm
 
 
-class ContactsView(View):
+class ContactsView(View, LoginRequiredMixin):
     def get(self, request, *args, **kwargs):
         name = request.POST.get('name')
         phone = request.POST.get('phone')
@@ -19,11 +19,11 @@ class ContactsView(View):
         return render(request, 'Catalog/contacts.html')
 
 
-class ProductListView(ListView):
+class ProductListView(ListView, LoginRequiredMixin):
     model = Product
 
 
-class ProductDetailView(DetailView):
+class ProductDetailView(DetailView, LoginRequiredMixin):
     model = Product
 
     def get_object(self, queryset=None):
