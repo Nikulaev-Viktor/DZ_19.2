@@ -63,6 +63,8 @@ class Product(models.Model):
     )
     views_count = models.IntegerField(default=0, verbose_name='просмотры')
 
+    is_published = models.BooleanField(default=False, verbose_name='Признак публикации')
+
     author = models.ForeignKey(User, on_delete=models.CASCADE, verbose_name='Автор', **NULLABLE, related_name='authors')
 
     def __str__(self):
@@ -72,6 +74,11 @@ class Product(models.Model):
         verbose_name = "продукт"
         verbose_name_plural = "продукты"
         ordering = ["title", "author"]
+        permissions = [
+            ('cancel_publication', 'может отменять публикацию'),
+            ('can_change_description', 'может менять описание любого продукта'),
+            ('can_change_category', 'может менять категорию любого продукта')
+        ]
 
 
 class Version(models.Model):

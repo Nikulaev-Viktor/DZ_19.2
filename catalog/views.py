@@ -1,4 +1,5 @@
 from django.contrib.auth.mixins import LoginRequiredMixin
+from django.core.exceptions import PermissionDenied
 from django.forms import inlineformset_factory
 from django.shortcuts import render
 from django.urls import reverse_lazy
@@ -6,10 +7,10 @@ from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
 from catalog.models import Product, Version
-from catalog.forms import ProductForm, VersionForm
+from catalog.forms import ProductForm, VersionForm, ProductModeratorForm
 
 
-class ContactsView(View, LoginRequiredMixin):
+class ContactsView(LoginRequiredMixin, View):
     def get(self, request, *args, **kwargs):
         name = request.POST.get('name')
         phone = request.POST.get('phone')
@@ -19,21 +20,23 @@ class ContactsView(View, LoginRequiredMixin):
         return render(request, 'Catalog/contacts.html')
 
 
-class ProductListView(ListView, LoginRequiredMixin):
+class ProductListView(LoginRequiredMixin, ListView):
     model = Product
 
 
-class ProductDetailView(DetailView, LoginRequiredMixin):
+class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
 
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
-        self.object.views_count += 1
-        self.object.save()
-        return self.object
+        if self.request.user == self.object.author:
+            self.object.views_count += 1
+            self.object.save()
+            return self.object
+        raise PermissionDenied
 
 
-class ProductCreateView(CreateView, LoginRequiredMixin):
+class ProductCreateView(LoginRequiredMixin, CreateView):
     model = Product
     form_class = ProductForm
     success_url = reverse_lazy('catalog:product_list')
@@ -46,7 +49,7 @@ class ProductCreateView(CreateView, LoginRequiredMixin):
         return super().form_valid(form)
 
 
-class ProductUpdateView(UpdateView, LoginRequiredMixin):
+class ProductUpdateView(LoginRequiredMixin, UpdateView):
     model = Product
     form_class = ProductForm
 
@@ -73,7 +76,16 @@ class ProductUpdateView(UpdateView, LoginRequiredMixin):
         else:
             return self.render_to_response(self.get_context_data(form=form, formset=formset))
 
+    def get_form_class(self):
+        user = self.request.user
+        if user == self.object.author:
+            return ProductForm
+        if user.has_perm('catalog.cancel_publication') and user.has_perm(
+                'catalog.can_change_description') and user.has_perm('catalog.can_change_category'):
+            return ProductModeratorForm
+        raise PermissionDenied
 
-class ProductDeleteView(DeleteView, LoginRequiredMixin):
+
+class ProductDeleteView(LoginRequiredMixin, DeleteView):
     model = Product
     success_url = reverse_lazy('catalog:product_list')
