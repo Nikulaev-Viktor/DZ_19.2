@@ -23,10 +23,6 @@ class ContactsView(LoginRequiredMixin, View):
 class ProductListView(LoginRequiredMixin, ListView):
     model = Product
 
-
-class ProductDetailView(LoginRequiredMixin, DetailView):
-    model = Product
-
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
         if self.request.user == self.object.author:
@@ -34,6 +30,12 @@ class ProductDetailView(LoginRequiredMixin, DetailView):
             self.object.save()
             return self.object
         raise PermissionDenied
+
+
+class ProductDetailView(LoginRequiredMixin, DetailView):
+    model = Product
+
+
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
