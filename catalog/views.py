@@ -6,8 +6,9 @@ from django.urls import reverse_lazy
 from django.views import View
 from django.views.generic import ListView, DetailView, CreateView, UpdateView, DeleteView
 
-from catalog.models import Product, Version
+from catalog.models import Product, Version, Category
 from catalog.forms import ProductForm, VersionForm, ProductModeratorForm
+from catalog.services import get_product_from_cache
 
 
 class ContactsView(LoginRequiredMixin, View):
@@ -23,6 +24,9 @@ class ContactsView(LoginRequiredMixin, View):
 class ProductListView(LoginRequiredMixin, ListView):
     model = Product
 
+    def get_queryset(self):
+        return get_product_from_cache()
+
     def get_object(self, queryset=None):
         self.object = super().get_object(queryset)
         if self.request.user == self.object.author:
@@ -34,8 +38,6 @@ class ProductListView(LoginRequiredMixin, ListView):
 
 class ProductDetailView(LoginRequiredMixin, DetailView):
     model = Product
-
-
 
 
 class ProductCreateView(LoginRequiredMixin, CreateView):
